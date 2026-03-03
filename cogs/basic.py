@@ -124,33 +124,32 @@ class Test(commands.Cog):
                 await self.join_vc()
 
     # command: !add 5 10
-    @commands.command(name = 'khoinghia')
-    async def T1(self, ctx: commands.Context[commands.Bot]):
+    @commands.command(name='khoinghia')
+    async def khoinghia(self, ctx: commands.Context):
         """
-        Gửi một bức ảnh cố định đã được định sẵn khi gõ !T1.
+        Khi gõ !khoinghia, bot sẽ nhắc tên người dùng và gửi lời kêu gọi lãnh đạo.
         """
+        # ctx.author.mention sẽ tạo ra chuỗi dạng <@ID_người_dùng>
+        user_mention = ctx.author.mention
         
-        # Đường dẫn cố định đến bức ảnh trên máy chủ của bot
+        # Đường dẫn ảnh (nếu bạn vẫn muốn gửi kèm ảnh)
         file_path = "/home/mq/Desktop/Project/bot/spammer-selfbot-main/image.png"
         
         try:
-            # Tạo một đối tượng discord.File từ đường dẫn và gửi
-            # Lệnh sẽ được gửi ngay tại kênh mà người dùng gõ !T1
-            await ctx.send("sếp mq hãy lãnh đạo chúng em đi!")
+            # Gửi tin nhắn kèm mention
+            # Chúng ta dùng f-string để chèn biến vào chuỗi dễ dàng hơn
+            response_msg = f"sếp {user_mention} hãy lãnh đạo chúng em đi!!!"
             
-            # (Tùy chọn) Nếu bạn muốn bot xóa tin nhắn "!T1" của người dùng
-            # await ctx.message.delete()
+            # Nếu bạn muốn gửi kèm cả bức ảnh image.png:
+            # await ctx.send(response_msg, file=discord.File(file_path))
+            
+            # Nếu chỉ muốn gửi tin nhắn văn bản:
+            await ctx.send(response_msg)
 
         except FileNotFoundError:
-            # Gửi thông báo lỗi nếu bot không tìm thấy file
-            await ctx.send(f"Lỗi: Không tìm thấy file tại đường dẫn: {file_path}. "
-                           "Hãy kiểm tra lại đường dẫn trên máy chủ bot.")
-        except discord.errors.Forbidden:
-            # Gửi thông báo nếu bot không có quyền gửi file
-            await ctx.send("Lỗi: Bot không có quyền 'Attach Files' (Đính kèm tệp) trong kênh này.")
+            await ctx.send(f"Lỗi: Không tìm thấy file ảnh tại {file_path}, nhưng sếp {user_mention} vẫn phải lãnh đạo!")
         except Exception as e:
-            # Gửi thông báo cho các lỗi khác
-            await ctx.send(f"Đã xảy ra lỗi không xác định: {e}")
+            await ctx.send(f"Đã xảy ra lỗi: {e}")
     # command: !ping
     # @commands.command(name='ping') # Đặt tên lệnh là 'ping'
     # async def ping(self, ctx: commands.Context[commands.Bot], *, prompt: str):
